@@ -43,17 +43,20 @@ const App = () => {
       <Button text='good' handleClick={() => handleClick('good')}/>
       <Button text='neutral' handleClick={() => handleClick('neutral')}/>
       <Button text='bad' handleClick={() => handleClick('bad')}/>
-
       <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {total()}</p>
-      <p>average {good === 0 && bad === 0 && neutral === 0 ? '0' : average()}</p>
-      <p>positive {good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()}</p>
+      <Statistics title='good' value={good} />
+      <Statistics title='neutral' value={neutral} />
+      <Statistics title='bad' value={bad} />
+      <Statistics title='all' value={total()} />
+      <Statistics title='average' value={good === 0 && bad === 0 && neutral === 0 ? '0' : average()} />
+      <Statistics title='positive' value={good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()} />
     </div>
   )
 }
+
+const Statistics = (props) => (
+  <p>{props.title} {props.value}</p>
+)
 
 const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
