@@ -44,12 +44,17 @@ const App = () => {
       <Button text='neutral' handleClick={() => handleClick('neutral')}/>
       <Button text='bad' handleClick={() => handleClick('bad')}/>
       <h1>statistics</h1>
-      <Statistics title='good' value={good} />
-      <Statistics title='neutral' value={neutral} />
-      <Statistics title='bad' value={bad} />
-      <Statistics title='all' value={total()} />
-      <Statistics title='average' value={good === 0 && bad === 0 && neutral === 0 ? '0' : average()} />
-      <Statistics title='positive' value={good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()} />
+      {good === 0 && bad === 0 && neutral === 0 ? <p>no feedback given</p> : 
+        <div>
+          <Statistics title='good' value={good} />
+          <Statistics title='neutral' value={neutral} />
+          <Statistics title='bad' value={bad} />
+          <Statistics title='all' value={total()} />
+          <Statistics title='average' value={good === 0 && bad === 0 && neutral === 0 ? '0' : average()} />
+          <Statistics title='positive' value={good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()} />
+        </div>
+      }
+      
     </div>
   )
 }
