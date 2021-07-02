@@ -54,7 +54,6 @@ const App = () => {
           <Statistics title='positive' value={good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()} />
         </div>
       }
-      
     </div>
   )
 }
