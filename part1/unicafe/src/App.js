@@ -6,17 +6,51 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+
+  const handleClick = (rate) => {
+    switch(rate) {
+      case 'good': 
+        console.log(good)
+        setGood(previousValue => previousValue + 1)
+        console.log(good)
+        break
+      case 'neutral':
+        setNeutral(previousValue => previousValue + 1)
+        break
+      case 'bad':
+        setBad(previousValue => previousValue + 1)
+        break
+      default:
+        console.log('wrong rate')
+    }
+  }
+
+  const total = () => (
+    good + neutral + bad
+  )
+
+  const average = () => (
+    (good - bad) / total()
+  )
+
+  const positive = () => (
+    `${good / total()*100} %`
+  )
+
   return (
     <div>
       <h1>give feedback</h1>
-      <Button text='good' handleClick={() => setGood(good + 1)}/>
-      <Button text='neutral' handleClick={() => setNeutral(neutral + 1)}/>
-      <Button text='bad' handleClick={() => setBad(bad + 1)}/>
+      <Button text='good' handleClick={() => handleClick('good')}/>
+      <Button text='neutral' handleClick={() => handleClick('neutral')}/>
+      <Button text='bad' handleClick={() => handleClick('bad')}/>
 
       <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {total()}</p>
+      <p>average {good === 0 && bad === 0 && neutral === 0 ? '0' : average()}</p>
+      <p>positive {good === 0 && bad === 0 && neutral === 0 ? '0 %' : positive()}</p>
     </div>
   )
 }
