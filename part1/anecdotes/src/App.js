@@ -30,6 +30,7 @@ const App = () => {
     console.log('best', bestAnecdotes)
   }
 
+  
   return (
     <div>
       <h2>anecdote of the day</h2>
