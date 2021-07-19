@@ -34,7 +34,7 @@ const App = () => {
   const handleFilter = (event) => {
     if(event.target.value !== '') {
       setFilterPersons(true)
-      setFilteredPersons(persons.filter(person => person.name.toLowerCase() === event.target.value.toLowerCase()))
+      setFilteredPersons(persons.filter(person => person.name.toLowerCase().includes(event.target.value.toLowerCase())))
     } else {
       setFilterPersons(false)
     }
