@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import InputField from './components/InputField'
 import Person from './components/Person'
 import noteService from './services/persons'
-import axios from 'axios'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -18,12 +17,24 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    persons.some(person => person.name === newName)
-     ? alert(`${newName} is already added to phonebook`)
-     : persons.some(el => el.number === newNumber)
-        ? alert(`${newNumber} is already added to phonebook`)
-        : noteService.create({ name: newName, number: newNumber }).then(res => setPersons(persons.concat(res)))
-        console.log(persons)
+    if(persons.some(person => person.name === newName)) {
+      if(window.confirm(`${newName} is already added, update phone number?`)) {
+        handleUpdate(persons.find(el => el.name === newName), newNumber)
+      }
+    } else {
+        if(persons.some(el => el.number === newNumber)) {
+          alert(`${newNumber} is already added to phonebook`)
+        } else {
+          noteService.create({ name: newName, number: newNumber }).then(res => setPersons(persons.concat(res)))
+        }
+      
+      console.log(persons)}
+     
+  }
+  
+  const handleUpdate = (oldPerson, number) => {
+    const newPerson = {...oldPerson, number: number}
+    noteService.update(oldPerson.id, newPerson).then(res => setPersons(persons.map(person => person.id === oldPerson.id ? res : person)))
   }
 
   const handleNameChange = (event) => {
