@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import InputField from './components/InputField'
 import Person from './components/Person'
+import Notification from './components/Notification'
 import noteService from './services/persons'
 
 const App = () => {
@@ -9,10 +10,21 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterPersons, setFilterPersons ] = useState(false)
   const [ filteredPersons, setFilteredPersons ] = useState([])
+  const [ notificationMessage, setNotificationMessage ] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then(initialPersons => setPersons(initialPersons))
   }, [])
+
+  const successfulNotifStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px'
+  }
 
 
   const handleSubmit = (event) => {
@@ -26,6 +38,10 @@ const App = () => {
           alert(`${newNumber} is already added to phonebook`)
         } else {
           noteService.create({ name: newName, number: newNumber }).then(res => setPersons(persons.concat(res)))
+          setNotificationMessage(`${newName} was added to the database`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         }
       
       console.log(persons)}
@@ -62,6 +78,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notificationMessage} styles={successfulNotifStyle}/>
       <h2>Phonebook</h2>
       <div>
         filter shown with <InputField handleChange={handleFilter}/>
