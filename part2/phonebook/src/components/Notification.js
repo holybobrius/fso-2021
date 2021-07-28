@@ -1,7 +1,7 @@
 const Notification = ({ message, styles }) => {
     if(message === null) return null
     return (
-        <div className='successful' style={styles}>
+        <div style={styles}>
             {message}
         </div>
     )
