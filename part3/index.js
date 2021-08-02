@@ -68,23 +68,19 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(p => p.id !== id)
-    response.status(204).end()
+    Person.findById(request.params.id).then(person => response.json(person))
 })
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(body)
-    if(!body.name || !body.number || persons.map(p => p.name).includes(body.name)) return response.status(400).json({ error: 'content error' })
-    const person = {
+    if(!body.name || !body.number) return response.status(400).json({ error: 'content error' })
+    const person = new Person({
         id: generateId(),
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
-    response.json(persons)
+    person.save().then(savedPerson => response.json(savedPerson))
 })
 
 
