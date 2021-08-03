@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const Person = require('./models/person')
+const { count } = require('./models/person')
 
 const app = express()
 
@@ -58,12 +59,18 @@ app.get('/', (request, response) => {
 
 app.get('/info', (request, response) => {
     date = new Date()
-    const info = 
-    `<div>
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${date}</p>
-    </div>`
+    console.log(Person.countDocuments({}))
+    let personCount = 0
+    Person.countDocuments({}, (err, count) => {
+        const info = 
+        `<div>
+            <p>Phonebook has info for ${count} people</p>
+            <p>${date}</p>
+        </div>`
     response.send(info)
+    })
+    
+    
 })
 
 app.get('/api/persons', (request, response) => {
