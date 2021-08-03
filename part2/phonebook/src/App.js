@@ -47,15 +47,17 @@ const App = () => {
         if(persons.some(el => el.number === newNumber)) {
           alert(`${newNumber} is already added to phonebook`)
         } else {
-          noteService.create({ name: newName, number: newNumber }).then(res => setPersons(persons.concat(res)))
-          setNotificationMessage(`${newName} was added to the database`)
+          noteService.create({ name: newName, number: newNumber })
+            .then(res => {
+              setPersons(persons.concat(res))
+              setNotificationMessage(`${newName} was added to the database`)
+            })
+            .catch(error => setErrorMessage(`${error.response.data.error}`))
           setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)
         }
-      
-      console.log(persons)}
-     
+      }
   }
   
   const handleUpdate = (oldPerson, number) => {
