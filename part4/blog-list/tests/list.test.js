@@ -112,3 +112,11 @@ test('most blogs is calculated correctly', () => {
     blogs: 3
   })
 })
+
+test('most likes is calculated correctly', () => {
+  const result = listHelper.mostLikes(blogsList)
+  expect(result).toEqual({
+    author: "Edsger W. Dijkstra",
+    likes: 17
+  })
+})

@@ -24,9 +24,19 @@ const mostBlogs = blogs => {
   return authors.filter(author => author.blogs === maxBlogs)[0]
 }
 
+const mostLikes = blogs => {
+  const authors = []
+  _.uniq(blogs.map(blog => blog.author)).forEach(author => {
+    authors.push({author: author, likes: blogs.filter(blog => blog.author === author).reduce((sum, item) => sum + item.likes, 0)})
+  })
+  const maxLikes = Math.max(...authors.map(author => author.likes))
+  return authors.filter(author => author.likes === maxLikes)[0]
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
