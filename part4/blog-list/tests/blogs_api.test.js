@@ -104,6 +104,22 @@ test('POST request successfuly creates a new blog post', async () => {
   expect(blogs).toContain('Type wars')
 })
 
+test('if likes property is undefined, blog will have the default value of 0 likes', async () => {
+  const newBlog = {
+    _id: "5a422bc61b54a676234d17fc",
+    title: "Type wars",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    __v: 0
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body[3].likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
