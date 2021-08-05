@@ -56,17 +56,6 @@ const initialNotes = [
   }  
 ]
 
-const listWithOneBlog = [
-  {
-    _id: "610a51bdf38b9b3930895504",
-    title: "Blog Example",
-    author: "FSO",
-    url: "https://fullstackopen.com/en/part4/",
-    likes: 4,
-    __v: 0
-  }
-]
-
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObject = new Blog(initialNotes[0])
@@ -94,6 +83,25 @@ test('unique identifier of blogs is named id and not _id', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body[0].id).toBeDefined()
   expect(response.body[0]._id).not.toBeDefined()
+})
+
+test('POST request successfuly creates a new blog post', async () => {
+  const newBlog = {
+    _id: "5a422bc61b54a676234d17fc",
+    title: "Type wars",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2,
+    __v: 0
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+  
+  const response = await api.get('/api/blogs')
+  const blogs = response.body.map(blog => blog.title)
+  expect(response.body).toHaveLength(4)
+  expect(blogs).toContain('Type wars')
 })
 
 afterAll(() => {
