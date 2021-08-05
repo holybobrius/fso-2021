@@ -120,6 +120,33 @@ test('if likes property is undefined, blog will have the default value of 0 like
   expect(response.body[3].likes).toBe(0)
 })
 
+describe('attempting to add blogs with undefined title or url properties results in 400 Bad Request', () => {
+  test('(no title)', async () => {
+    const newBlog = {
+      _id: "5a422bc61b54a676234d17fc",
+      author: "Robert C. Martin",
+      url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+      __v: 0
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+  test('(no url)', async () => {
+    const newBlog = {
+      _id: "5a422bc61b54a676234d17fc",
+      title: "Type wars",
+      author: "Robert C. Martin",
+      __v: 0
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
