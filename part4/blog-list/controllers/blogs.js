@@ -1,7 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response) => {
@@ -17,7 +15,6 @@ blogsRouter.get('/:id', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const user = request.user
-  console.log(user.id)
   const blog = new Blog({
     title: body.title,
     author: body.author,

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const blogsRouter = require('../controllers/blogs')
 const app = require('../app')
 const Blog = require('../models/blog')
 
@@ -96,8 +97,8 @@ test('POST request successfuly creates a new blog post', async () => {
   }
   await api
     .post('/api/blogs')
+    .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QtdXNlcm5hbWUiLCJpZCI6IjYxMGZmZDViMDE1YmEyNGYwNGY4ODQ2OCIsImlhdCI6MTYyODQzNzg3NX0.WEO30MU41b04HDy9UlNo2I3RQ22sibjNId7F3iYtZU4')
     .send(newBlog)
-  
   const response = await api.get('/api/blogs')
   const blogs = response.body.map(blog => blog.title)
   expect(response.body).toHaveLength(4)
@@ -117,6 +118,7 @@ test('if likes property is undefined, blog will have the default value of 0 like
     .send(newBlog)
 
   const response = await api.get('/api/blogs')
+  console.log(response)
   expect(response.body[3].likes).toBe(0)
 })
 
