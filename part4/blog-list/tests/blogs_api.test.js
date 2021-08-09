@@ -115,10 +115,10 @@ test('if likes property is undefined, blog will have the default value of 0 like
   }
   await api
     .post('/api/blogs')
+    .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QtdXNlcm5hbWUiLCJpZCI6IjYxMGZmZDViMDE1YmEyNGYwNGY4ODQ2OCIsImlhdCI6MTYyODQzNzg3NX0.WEO30MU41b04HDy9UlNo2I3RQ22sibjNId7F3iYtZU4')
     .send(newBlog)
 
   const response = await api.get('/api/blogs')
-  console.log(response)
   expect(response.body[3].likes).toBe(0)
 })
 
@@ -132,8 +132,9 @@ describe('attempting to add blogs with undefined title or url properties results
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QtdXNlcm5hbWUiLCJpZCI6IjYxMGZmZDViMDE1YmEyNGYwNGY4ODQ2OCIsImlhdCI6MTYyODQzNzg3NX0.WEO30MU41b04HDy9UlNo2I3RQ22sibjNId7F3iYtZU4')
       .send(newBlog)
-      .expect(400)
+      .expect(401)
   })
   test('(no url)', async () => {
     const newBlog = {
@@ -144,10 +145,11 @@ describe('attempting to add blogs with undefined title or url properties results
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QtdXNlcm5hbWUiLCJpZCI6IjYxMGZmZDViMDE1YmEyNGYwNGY4ODQ2OCIsImlhdCI6MTYyODQzNzg3NX0.WEO30MU41b04HDy9UlNo2I3RQ22sibjNId7F3iYtZU4')
       .send(newBlog)
-      .expect(400)
+      .expect(401)
   })
-})
+}, 100000)
 
 afterAll(() => {
   mongoose.connection.close()
