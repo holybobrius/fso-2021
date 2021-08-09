@@ -30,13 +30,20 @@ const App = () => {
         username, password
       })
       window.localStorage.setItem('loggedBlogsAppUser', JSON.stringify(user))
+      console.log(user.token)
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
-      console.log(user)
     } catch (exception) {
       console.log(user, 'Wrong credentials!')
     }
+  }
+
+  const handleSubmit = newBlog => {
+    newBlog.user = user
+    console.log(newBlog, newBlog.user.token)
+    blogService.create(newBlog).then(addedBlog => setBlogs(blogs.concat(addedBlog)))
   }
 
   useEffect(() => {
@@ -50,13 +57,14 @@ const App = () => {
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
   return (
     <div>
       {user !== null 
-        ? <BlogsForm blogs={blogs} handleClick={handleLogout}/>
+        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit}/>
         : <LoginForm 
             handleUsername={handleUsername}
             handlePassword={handlePassword}
