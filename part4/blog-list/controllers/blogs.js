@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response) => {
@@ -45,9 +46,13 @@ blogsRouter.put('/:id', async (request, response) => {
     id: body.id,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
+    user: request.user
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  updatedBlog.user = await User.findById(updatedBlog.user)
+  updatedBlog.save()
+  console.log(updatedBlog)
   response.json(updatedBlog)
 })
 

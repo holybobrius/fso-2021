@@ -77,6 +77,12 @@ const App = () => {
     }, 5000)
   }
 
+  const handleUpdate = updatedBlog => {
+    console.log(updatedBlog.user)
+    blogService.update(updatedBlog.id, updatedBlog)
+      .then(updatedObj => setBlogs(blogs.map(blog => blog.id === updatedObj.id ? updatedObj : blog)))
+  }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -97,7 +103,7 @@ const App = () => {
       <Notification message={notificationMessage} styles={successfulNotifStyle}/>
       <Notification message={errorMessage} styles={errorNotifStyle} />
       {user !== null 
-        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit}/>
+        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate}/>
         : <Togglable buttonLabel='show login'><LoginForm 
             handleUsername={handleUsername}
             handlePassword={handlePassword}

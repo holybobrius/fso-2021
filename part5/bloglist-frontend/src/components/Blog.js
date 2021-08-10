@@ -1,8 +1,9 @@
 import '../styles/blogs.css' 
 
 import React, { useState } from 'react'
-const Blog = ({blog}) => {
+const Blog = ({blog, handleUpdate}) => {
   const [expanded, setExpanded] = useState(false)
+  
   return(
     <div className='blog'>
       {expanded 
@@ -11,7 +12,12 @@ const Blog = ({blog}) => {
             <p style={{color: 'blue'}}>{blog.url}</p>
             <div>
               {`likes ${blog.likes}`}
-              <button>like</button>
+              <button onClick={() => {
+                const blogToUpdate = {
+                  ...blog, likes: blog.likes+1
+                }
+                handleUpdate(blogToUpdate)
+              }}>like</button>
             </div>
             <p>{`added by ${blog.user.name}`}</p>
             <button onClick={() => setExpanded(!expanded)}>hide</button>
