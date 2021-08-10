@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -97,11 +98,11 @@ const App = () => {
       <Notification message={errorMessage} styles={errorNotifStyle} />
       {user !== null 
         ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit}/>
-        : <LoginForm 
+        : <Togglable buttonLabel='show login'><LoginForm 
             handleUsername={handleUsername}
             handlePassword={handlePassword}
             handleLogin={handleLogin}
-          />
+          /></Togglable>
       }
     </div>
   )
