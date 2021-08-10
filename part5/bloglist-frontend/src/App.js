@@ -83,6 +83,12 @@ const App = () => {
       .then(updatedObj => setBlogs(blogs.map(blog => blog.id === updatedObj.id ? updatedObj : blog)))
   }
 
+  const handleDelete = async blog => {
+    // eslint-disable-next-line no-unused-vars
+    const response = await blogService.deleteBlog(blog)
+    setBlogs(blogs.filter(el => el.id !== blog.id))
+  }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
@@ -103,7 +109,7 @@ const App = () => {
       <Notification message={notificationMessage} styles={successfulNotifStyle}/>
       <Notification message={errorMessage} styles={errorNotifStyle} />
       {user !== null 
-        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate}/>
+        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
         : <Togglable buttonLabel='show login'><LoginForm 
             handleUsername={handleUsername}
             handlePassword={handlePassword}
