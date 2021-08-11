@@ -1,5 +1,5 @@
-
-import { useState } from "react"
+import React from 'react'
+import { useState } from 'react'
 
 const CreateForm = ({ handleCreate }) => {
   const [title, setTitle] = useState('')
@@ -8,7 +8,7 @@ const CreateForm = ({ handleCreate }) => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    const newObject = { title, author, url}
+    const newObject = { title, author, url }
     handleCreate(newObject)
   }
 

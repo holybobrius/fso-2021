@@ -1,9 +1,10 @@
- const Notification = ({ message, styles }) => {
+import React from 'react'
+const Notification = ({ message, styles }) => {
   if(message === null) return null
   return (
-      <div style={styles}>
-          {message}
-      </div>
+    <div style={styles}>
+      {message}
+    </div>
   )
 }
 

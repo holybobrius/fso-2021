@@ -13,7 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [ notificationMessage, setNotificationMessage ] = useState(null)
   const [ errorMessage, setErrorMessage ] = useState(null)
-  
+
   const successfulNotifStyle = {
     color: 'green',
     background: 'lightgrey',
@@ -92,7 +92,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -108,13 +108,13 @@ const App = () => {
     <div>
       <Notification message={notificationMessage} styles={successfulNotifStyle}/>
       <Notification message={errorMessage} styles={errorNotifStyle} />
-      {user !== null 
+      {user !== null
         ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
-        : <Togglable buttonLabel='show login'><LoginForm 
-            handleUsername={handleUsername}
-            handlePassword={handlePassword}
-            handleLogin={handleLogin}
-          /></Togglable>
+        : <Togglable buttonLabel='show login'><LoginForm
+          handleUsername={handleUsername}
+          handlePassword={handlePassword}
+          handleLogin={handleLogin}
+        /></Togglable>
       }
     </div>
   )

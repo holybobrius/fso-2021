@@ -1,6 +1,7 @@
-import Blog from "./Blog"
-import CreateForm from "./CreateForm"
-import Togglable from "./Togglable"
+import React from 'react'
+import Blog from './Blog'
+import CreateForm from './CreateForm'
+import Togglable from './Togglable'
 
 const BlogsForm = ({ blogs, handleClick, handleCreate, handleUpdate, handleDelete }) => {
   return (
