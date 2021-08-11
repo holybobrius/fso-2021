@@ -14,4 +14,22 @@ describe('Blogs app', function() {
     cy.contains('show login').click()
     cy.get('#login')
   })
+
+  describe('Login', function() {
+    it('succeeds with correct credentials', function() {
+      cy.contains('show login').click()
+      cy.get('#username').type('test')
+      cy.get('#password').type('password')
+      cy.get('#submitLogin').click()
+      cy.contains('logout')
+    })
+
+    it('fails with correct credentials', function() {
+      cy.contains('show login').click()
+      cy.get('#username').type('wrongusername')
+      cy.get('#password').type('wrongpassword')
+      cy.get('#submitLogin').click()
+      cy.contains('Login failed!').should('have.css', 'color', 'rgb(255, 0, 0)')
+    })
+  })
 })
