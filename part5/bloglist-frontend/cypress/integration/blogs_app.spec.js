@@ -6,7 +6,13 @@ describe('Blogs app', function() {
       username: 'test',
       password: 'password'
     }
+    const anotherUser = {
+      name: 'test-user2',
+      username: 'test2',
+      password: 'password2'
+    }
     cy.request('POST', 'http://localhost:3003/api/users', user)
+    cy.request('POST', 'http://localhost:3003/api/users', anotherUser)
     cy.visit('http://localhost:3000/')
   })
 
@@ -49,7 +55,7 @@ describe('Blogs app', function() {
       cy.contains('cypress-blog cypress-author')
     })
   })
-  
+
   describe('When logged in and added blog', function() {
     beforeEach(function() {
       cy.contains('show login').click()
@@ -67,6 +73,34 @@ describe('Blogs app', function() {
       cy.contains('expand').click()
       cy.contains('like').click()
       cy.contains('likes 1')
+    })
+    it('user can delete the blog he added', function() {
+      cy.contains('expand').click()
+      cy.contains('delete').click()
+      cy.get('.blog').should('have.length', 1)
+    })
+  })
+  describe('When logged in and another user added blog', function() {
+    beforeEach(function() {
+      cy.contains('show login').click()
+      cy.get('#username').type('test2')
+      cy.get('#password').type('password2')
+      cy.get('#submitLogin').click()
+      cy.contains('create new blog').click()
+      cy.get('#title').type('cypress-blog')
+      cy.get('#author').type('cypress-author')
+      cy.get('#url').type('cypress-url')
+      cy.get('#submitBlog').click()
+      cy.contains('logout').click()
+      cy.contains('show login').click()
+      cy.get('#username').type('test')
+      cy.get('#password').type('password')
+      cy.get('#submitLogin').click()
+    })
+    it('user cannot delete a blog added by another user', function() {
+      cy.contains('expand').click()
+      cy.contains('delete').click()
+      cy.get('.blog').should('have.length', 1)
     })
   })
 })

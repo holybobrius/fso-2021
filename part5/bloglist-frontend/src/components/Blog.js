@@ -26,7 +26,7 @@ const Blog = ({ blog, handleUpdate, handleDelete }) => {
         </div>
         : <div>
           {blog.title} {blog.author}
-          <button onClick={() => setExpanded(!expanded)}>expand</button>
+          <button className='expand' onClick={() => setExpanded(!expanded)}>expand</button>
         </div>
       }
     </div>
