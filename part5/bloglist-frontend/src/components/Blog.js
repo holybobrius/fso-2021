@@ -7,9 +7,9 @@ const Blog = ({ blog, handleUpdate, handleDelete }) => {
     <div className='blog'>
       {expanded
         ? <div>
-          <p>{`${blog.title} by ${blog.author}`}</p>
-          <p style={{ color: 'blue' }}>{blog.url}</p>
-          <div>
+          <p className='title'>{`${blog.title} by ${blog.author}`}</p>
+          <p className='url' style={{ color: 'blue' }}>{blog.url}</p>
+          <div className='likes'>
             {`likes ${blog.likes}`}
             <button onClick={() => {
               const blogToUpdate = {
