@@ -32,4 +32,21 @@ describe('Blogs app', function() {
       cy.contains('Login failed!').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.contains('show login').click()
+      cy.get('#username').type('test')
+      cy.get('#password').type('password')
+      cy.get('#submitLogin').click()
+    })
+    it('A blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('cypress-blog')
+      cy.get('#author').type('cypress-author')
+      cy.get('#url').type('cypress-url')
+      cy.get('#submitBlog').click()
+      cy.contains('cypress-blog cypress-author')
+    })
+  })
 })
