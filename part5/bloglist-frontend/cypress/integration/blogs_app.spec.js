@@ -49,4 +49,24 @@ describe('Blogs app', function() {
       cy.contains('cypress-blog cypress-author')
     })
   })
+  
+  describe('When logged in and added blog', function() {
+    beforeEach(function() {
+      cy.contains('show login').click()
+      cy.get('#username').type('test')
+      cy.get('#password').type('password')
+      cy.get('#submitLogin').click()
+      cy.contains('create new blog').click()
+      cy.get('#title').type('cypress-blog')
+      cy.get('#author').type('cypress-author')
+      cy.get('#url').type('cypress-url')
+      cy.get('#submitBlog').click()
+      cy.contains('cypress-blog cypress-author')
+    })
+    it('a blog can be liked', function() {
+      cy.contains('expand').click()
+      cy.contains('like').click()
+      cy.contains('likes 1')
+    })
+  })
 })
