@@ -109,4 +109,28 @@ describe('<Blog />', () => {
 
     expect(likes).toHaveTextContent('likes 5')
   })
+
+  test('clicking the expand button renders blog likes', () => {
+    const blog = {
+      title: 'blog for testing',
+      author: 'author for testing',
+      url: 'url for testing',
+      likes: 5,
+      user: { name: 'user for testing' }
+    }
+
+    const mockHandler = jest.fn()
+    const component = render(
+      <Blog blog={blog} handleUpdate={mockHandler}/>
+    )
+
+    const expandButton = component.getByText('expand')
+    fireEvent.click(expandButton)
+    const likeButton = component.getByText('like')
+
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
 })
