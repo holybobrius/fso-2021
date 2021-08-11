@@ -16,13 +16,13 @@ const CreateForm = ({ handleCreate }) => {
     <form onSubmit={handleSubmit}>
       <h2>create</h2>
       <label>title</label>
-      <input onChange={({ target }) => setTitle(target.value)} />
+      <input id='title' onChange={({ target }) => setTitle(target.value)} />
       <br></br>
       <label>author</label>
-      <input onChange={({ target }) => setAuthor(target.value)} />
+      <input id='author' onChange={({ target }) => setAuthor(target.value)} />
       <br></br>
       <label>url</label>
-      <input onChange={({ target }) => setUrl(target.value)} />
+      <input id='url' onChange={({ target }) => setUrl(target.value)} />
       <br></br>
       <input type='submit'></input>
     </form>
