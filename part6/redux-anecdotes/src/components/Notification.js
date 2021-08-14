@@ -7,6 +7,7 @@ const Notification = ({ label }) => {
     padding: 10,
     borderWidth: 1
   }
+  if(label === null) return null
   return (
     <div style={style}>
       {label}
