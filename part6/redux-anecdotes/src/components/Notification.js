@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-const Notification = () => {
+const Notification = ({ label }) => {
   const style = {
     border: 'solid',
     padding: 10,
@@ -9,7 +9,7 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      {label}
     </div>
   )
 }
