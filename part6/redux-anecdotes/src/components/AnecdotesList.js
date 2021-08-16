@@ -13,8 +13,7 @@ const AnecdotesList = () => {
 
   const vote = anecdote => {
     dispatch(voteFor(anecdote))
-    dispatch(sendConfirmation(anecdote.content))
-    setTimeout(() => dispatch(endNotification()), 5000)
+    dispatch(sendConfirmation(anecdote.content, 5))
   }
 
   console.log(filter)

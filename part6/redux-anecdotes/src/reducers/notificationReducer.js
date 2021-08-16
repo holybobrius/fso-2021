@@ -10,10 +10,18 @@ const notificationReducer = (state = null, action) => {
   }
 }
 
-export const sendConfirmation = content => {
-  return {
-    type: 'SEND_CONFIRMATION',
-    data: { content }
+export const sendConfirmation = (content, time) => {
+  return dispatch => {
+    setTimeout(() => {
+      console.log(content, time)
+      dispatch({
+        type: 'END_NOTIFICATION'
+      })
+    }, time*1000)
+    dispatch({
+      type: 'SEND_CONFIRMATION',
+      data: { content }
+    })
   }
 }
 
