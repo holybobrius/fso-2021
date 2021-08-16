@@ -1,7 +1,6 @@
 import React from 'react'
 import { create } from '../reducers/anecdoteReducer'
 import { useDispatch } from 'react-redux'
-import anecdotesService from '../services/anecdotes'
 
 const AnecdoteForm = () => {
 
@@ -17,7 +16,6 @@ const AnecdoteForm = () => {
       id: getId()
     }
     dispatch(create(anecdote))
-    anecdotesService.addAnecdote(anecdote)
   }
 
   return (
