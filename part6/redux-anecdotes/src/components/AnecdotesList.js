@@ -14,8 +14,6 @@ const AnecdotesList = () => {
     dispatch(voteFor(anecdote))
     dispatch(sendConfirmation(anecdote.content, 5))
   }
-
-  console.log(filter)
   return (
     <div>
       <Notification />

@@ -1,8 +1,6 @@
 import anecdotesService from '../services/anecdotes'
 
 const anecdoteReducer = (state = [], action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
   switch(action.type) {
     case 'VOTE':
       const anecdoteToVote = state.find(n => n.id === action.data.id)
