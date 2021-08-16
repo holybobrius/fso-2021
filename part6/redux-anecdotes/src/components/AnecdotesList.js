@@ -12,7 +12,7 @@ const AnecdotesList = () => {
   const dispatch = useDispatch()
 
   const vote = anecdote => {
-    dispatch(voteFor(anecdote.id))
+    dispatch(voteFor(anecdote))
     dispatch(sendConfirmation(anecdote.content))
     setTimeout(() => dispatch(endNotification()), 5000)
   }
