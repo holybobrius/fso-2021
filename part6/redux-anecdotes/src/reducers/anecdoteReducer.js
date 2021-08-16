@@ -1,3 +1,5 @@
+import anecdotesService from '../services/anecdotes'
+
 const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -12,6 +14,8 @@ const anecdoteReducer = (state = [], action) => {
       return state.map(anecdote => anecdote.id !== id ? anecdote : votedAnecdote)
     case 'CREATE':
       return state.concat(action.data)
+    case 'INIT_ANECDOTES':
+      return state = action.data
     default: return state
   }
 }
@@ -28,6 +32,16 @@ export const create = anecdote => {
   return {
     type: 'CREATE',
     data: anecdote
+  }
+}
+
+export const initializeAnecdotes = anecdotes => {
+  return async dispatch => {
+    const anecdotes = await anecdotesService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    })
   }
 }
 
