@@ -1,12 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteFor } from '../reducers/anecdoteReducer'
-import { sendConfirmation, endNotification } from '../reducers/notificationReducer'
+import { sendConfirmation } from '../reducers/notificationReducer'
 import Notification from './Notification'
 
 const AnecdotesList = () => {
   const anecdotes = useSelector(state => state.anecdotes).sort((a, b) => b.votes - a.votes)
-  const notification = useSelector(state => state.notifications)
   const filter = useSelector(state => state.filter)
 
   const dispatch = useDispatch()
@@ -19,7 +18,7 @@ const AnecdotesList = () => {
   console.log(filter)
   return (
     <div>
-      <Notification label={notification}/>
+      <Notification />
       {filter === '' 
         ? anecdotes.map(anecdote =>
             <div key={anecdote.id}>
