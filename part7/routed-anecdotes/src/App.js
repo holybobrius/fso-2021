@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link, useParams
+  Switch, Route, Link, useParams, Redirect, useHistory
 } from "react-router-dom"
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
@@ -49,7 +49,7 @@ const App = () => {
       <Menu />
       <Switch>
         <Route path='/create'>
-          <CreateNew addNew={addNew}/>
+          <CreateNew addNew={addNew} setNotification={setNotification}/>
         </Route>
         <Route path='/about'>
           <About />
@@ -59,7 +59,7 @@ const App = () => {
         <Anecdote anecdotes={anecdotes}/>
       </Route>
       <Route exact path="/">
-        <AnecdoteList anecdotes={anecdotes}/>
+        <AnecdoteList anecdotes={anecdotes} notification={notification}/>
       </Route>
       <Footer />
     </Router>
@@ -71,6 +71,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -80,6 +82,9 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
+    setTimeout(() => props.setNotification(null), 10000)
+    props.setNotification(`${content} was added!`)
   }
 
   return (
@@ -118,9 +123,10 @@ const Menu = () => {
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = ({ anecdotes, notification }) => (
   <div>
     <h2>Anecdotes</h2>
+    <Notification notification={notification}/>
     <ul>
       {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
@@ -153,6 +159,12 @@ const Anecdote = ({ anecdotes }) => {
     </div>
   )
 }
+
+const Notification = ({ notification }) => (
+  <div>
+    {notification === null ? null : <p>{notification}</p>}
+  </div>
+)
 
 const Footer = () => (
   <div>
