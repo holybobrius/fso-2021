@@ -72,10 +72,13 @@ const CreateNew = (props) => {
   const author = useField('author')
   const info = useField('info')
 
-  console.log(content, author, info)
-
   const history = useHistory()
 
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -108,6 +111,7 @@ const CreateNew = (props) => {
         </div>
         <button>create</button>
       </form>
+      <button onClick={handleReset}>reset</button>
     </div>
   )
 }
@@ -153,7 +157,6 @@ const About = () => (
 const Anecdote = ({ anecdotes }) => {
   const id = useParams().id
   const anecdote = anecdotes.find(n => n.id === (id))
-  console.log(anecdote)
   return (
     <div>
       <h2>{`${anecdote.content} by ${anecdote.author}`}</h2>
