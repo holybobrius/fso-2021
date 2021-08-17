@@ -5,45 +5,16 @@ import {
 } from "react-router-dom"
 
 const Menu = () => {
-  const [anecdotes, setAnecdotes] = useState([
-    {
-      content: 'If it hurts, do it more often',
-      author: 'Jez Humble',
-      info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
-      votes: 0,
-      id: '1'
-    },
-    {
-      content: 'Premature optimization is the root of all evil',
-      author: 'Donald Knuth',
-      info: 'http://wiki.c2.com/?PrematureOptimization',
-      votes: 0,
-      id: '2'
-    }
-  ])
+  
   const padding = {
     paddingRight: 5
   }
   return (
-    <Router>
       <div>
         <Link to='/anecdotes' style={padding}>anecdotes</Link>
         <Link to='/create' style={padding}>create new</Link>
         <Link to='/about' style={padding}>about</Link>
       </div>
-
-      <Switch>
-        <Route path='/anecdotes'>
-          <AnecdoteList anecdotes={anecdotes}/>
-        </Route>
-        <Route path='/create'>
-          <CreateNew />
-        </Route>
-        <Route path='/about'>
-          <About />
-        </Route>
-      </Switch>
-    </Router>
   )
 }
 
@@ -157,14 +128,22 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Router>
       <h1>Software anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      <Switch>
+        <Route path='/anecdotes'>
+          <AnecdoteList anecdotes={anecdotes}/>
+        </Route>
+        <Route path='/create'>
+          <CreateNew addNew={addNew}/>
+        </Route>
+        <Route path='/about'>
+          <About />
+        </Route>
+      </Switch>
       <Footer />
-    </div>
+    </Router>
   )
 }
 
