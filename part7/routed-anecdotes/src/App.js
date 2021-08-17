@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, useParams
 } from "react-router-dom"
 
 const App = () => {
@@ -55,7 +55,10 @@ const App = () => {
           <About />
         </Route>
       </Switch>
-      <Route path="/">
+      <Route path='/anecdotes/:id'>
+        <Anecdote anecdotes={anecdotes}/>
+      </Route>
+      <Route exact path="/">
         <AnecdoteList anecdotes={anecdotes}/>
       </Route>
       <Footer />
@@ -119,7 +122,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
@@ -137,6 +140,19 @@ const About = () => (
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
 )
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(n => n.id === (id))
+  console.log(anecdote)
+  return (
+    <div>
+      <h2>{`${anecdote.content} by ${anecdote.author}`}</h2>
+      <p>{`has ${anecdote.votes} votes`}</p>
+      <a href={anecdote.info}>Info</a>
+    </div>
+  )
+}
 
 const Footer = () => (
   <div>
