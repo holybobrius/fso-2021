@@ -8,14 +8,15 @@ import Togglable from './components/Togglable'
 import { login, logout } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
+import { create } from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const user = useSelector(state => state.user)
   const notification = useSelector(state => state.notification)
+  const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
 
   const handleUsername = event => {
@@ -51,7 +52,7 @@ const App = () => {
   const handleSubmit = newBlog => {
     newBlog.user = user
     console.log(newBlog, newBlog.user.token)
-    blogService.create(newBlog).then(addedBlog => setBlogs(blogs.concat(addedBlog)))
+    blogService.create(newBlog).then(addedBlog => dispatch(create(addedBlog)))
     dispatch(showNotif(`a new blog ${newBlog.title} by ${newBlog.author} added`))
     setTimeout(() => {
       dispatch(end())
@@ -60,21 +61,19 @@ const App = () => {
 
   const handleUpdate = updatedBlog => {
     console.log(updatedBlog.user)
-    blogService.update(updatedBlog.id, updatedBlog)
-      .then(updatedObj => setBlogs(blogs.map(blog => blog.id === updatedObj.id ? updatedObj : blog)))
+    //blogService.update(updatedBlog.id, updatedBlog)
+    //  .then(updatedObj => setBlogs(blogs.map(blog => blog.id === updatedObj.id ? updatedObj : blog)))
   }
 
   const handleDelete = async blog => {
     // eslint-disable-next-line no-unused-vars
     const response = await blogService.deleteBlog(blog)
-    setBlogs(blogs.filter(el => el.id !== blog.id))
+    //setBlogs(blogs.filter(el => el.id !== blog.id))
   }
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )
-  }, [])
+    blogService.getAll().then(res => res.forEach(n => dispatch(create(n))))
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsAppUser')
