@@ -8,7 +8,7 @@ import Togglable from './components/Togglable'
 import { login, logout } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
-import { create } from './reducers/blogReducer'
+import { create, deleteBlog, updateBlog } from './reducers/blogReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -61,14 +61,14 @@ const App = () => {
 
   const handleUpdate = updatedBlog => {
     console.log(updatedBlog.user)
-    //blogService.update(updatedBlog.id, updatedBlog)
-    //  .then(updatedObj => setBlogs(blogs.map(blog => blog.id === updatedObj.id ? updatedObj : blog)))
+    blogService.update(updatedBlog.id, updatedBlog)
+      .then(updatedObj => dispatch(updateBlog(updatedObj)))
   }
 
   const handleDelete = async blog => {
     // eslint-disable-next-line no-unused-vars
     const response = await blogService.deleteBlog(blog)
-    //setBlogs(blogs.filter(el => el.id !== blog.id))
+    dispatch(deleteBlog(blog.id))
   }
 
   useEffect(() => {
