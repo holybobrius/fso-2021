@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import BlogsForm from './components/BlogsForm'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
@@ -11,21 +11,11 @@ import { end, showError, showNotif } from './reducers/notificationReducer'
 import { create, deleteBlog, updateBlog } from './reducers/blogReducer'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
   const user = useSelector(state => state.user)
   const notification = useSelector(state => state.notification)
   const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
-
-  const handleUsername = event => {
-    setUsername(event.target.value)
-  }
-
-  const handlePassword = event => {
-    setPassword(event.target.value)
-  }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogsAppUser')
@@ -36,7 +26,8 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password
+        username: event.target.username.value,
+        password: event.target.password.value
       })
       window.localStorage.setItem('loggedBlogsAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -90,8 +81,6 @@ const App = () => {
       {user !== null
         ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
         : <Togglable buttonLabel='show login'><LoginForm
-          handleUsername={handleUsername}
-          handlePassword={handlePassword}
           handleLogin={handleLogin}
         /></Togglable>
       }
