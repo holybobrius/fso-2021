@@ -3,14 +3,17 @@ import BlogsForm from './components/BlogsForm'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import usersService from './services/users'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { login, logout } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
 import { create, deleteBlog, initializeBlogs, updateBlog } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Users from './views/Users'
+import User from './views/User'
 
 const App = () => {
 
@@ -18,6 +21,7 @@ const App = () => {
   const notification = useSelector(state => state.notification)
   const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
+  const users = useSelector(state => state.users)
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogsAppUser')
@@ -65,7 +69,15 @@ const App = () => {
   }
 
   useEffect(() => {
+    usersService.getAll().then(res => {
+      dispatch(initializeUsers(res))
+    })
+  }, [dispatch])
+
+
+  useEffect(() => {
     blogService.getAll().then(res => dispatch(initializeBlogs(res)))
+    usersService.getAll().then(res => dispatch(initializeUsers(res)))
   }, [dispatch])
 
   useEffect(() => {
@@ -80,10 +92,13 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path='/users'>
-          <Users />
+        <Route exact path='/users/:id'>
+          <User users={users}/>
         </Route>
-        <Route path='/'>
+        <Route exact path='/users'>
+          <Users users={users}/>
+        </Route>
+        <Route exact path='/'>
           <div>
             <Notification message={notification.content} styles={notification.style}/>
             {user !== null
