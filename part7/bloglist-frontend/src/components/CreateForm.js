@@ -8,7 +8,7 @@ const CreateForm = ({ handleCreate }) => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    const newObject = { title, author, url }
+    const newObject = { title, author, url  }
     handleCreate(newObject)
   }
 

@@ -17,16 +17,16 @@ blogsRouter.get('/:id', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const user = request.user
-  console.log('user', user)
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    comments: body.comments,
     user: user
   })
+  console.log('blog', blog)
   const result = await blog.save()
-  console.log('request user', result.user)
+  console.log(result)
   user.blogs = user.blogs.concat(result._id)
   await user.save()
   response.status(201).json(result)
@@ -41,6 +41,26 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  
+  const user = await User.findById(blog.user)
+  
+  const updatedObj = {
+    title: blog.title,
+    id: blog.id,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes,
+    comments: request.body.content,
+    user: user
+  }
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedObj, { new: true })
+  updatedBlog.user = await User.findById(request.body.user)
+  updatedBlog.save()
+  response.json(updatedBlog)
+})
+
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
   console.log('body user', body.user)
@@ -53,6 +73,7 @@ blogsRouter.put('/:id', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    comments: body.comments,
     user: body.user
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
