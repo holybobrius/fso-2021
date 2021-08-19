@@ -8,7 +8,7 @@ import Togglable from './components/Togglable'
 import { login, logout } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
-import { create, deleteBlog, updateBlog } from './reducers/blogReducer'
+import { create, deleteBlog, initializeBlogs, updateBlog } from './reducers/blogReducer'
 
 const App = () => {
 
@@ -63,7 +63,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAll().then(res => res.forEach(n => dispatch(create(n))))
+    blogService.getAll().then(res => dispatch(initializeBlogs(res)))
   }, [dispatch])
 
   useEffect(() => {

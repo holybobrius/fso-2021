@@ -1,7 +1,7 @@
 const blogReducer = (state = [], action) => {
   switch(action.type) {
   case 'INIT':
-    return state = action.data
+    return state = action.data.sort((a, b) => b.likes - a.likes)
   case 'CREATE':
     return state.concat(action.data)
   case 'DELETE':
@@ -38,6 +38,13 @@ export const updateBlog = blog => {
   return {
     type: 'UPDATE',
     data: blog
+  }
+}
+
+export const initializeBlogs = blogs => {
+  return {
+    type: 'INIT',
+    data: blogs
   }
 }
 
