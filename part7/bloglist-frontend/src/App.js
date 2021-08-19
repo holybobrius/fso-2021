@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
 import { create, deleteBlog, initializeBlogs, updateBlog } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Users from './views/Users'
 import User from './views/User'
 import Blog from './views/Blog'
@@ -93,6 +93,13 @@ const App = () => {
 
   return (
     <Router>
+      {user === null ? null :
+        <nav>
+          <Link to='/'>Blogs</Link>
+          <Link to='/users'>Users</Link>
+          <button onClick={handleLogout}>logout</button>
+        </nav>
+      }
       <Switch>
         <Route path='/blogs/:id'>
           <Blog blogs={blogs} handleLike={handleUpdate} handleDelete={handleDelete}/>
