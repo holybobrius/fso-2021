@@ -30,11 +30,12 @@ const tokenExtractor = async (request, response, next) => {
   const authorization = request.get('authorization')
   if(authorization && authorization.toLowerCase().startsWith('bearer ')) {
     const token = authorization.substring(7)
+    console.log(token)
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if(!token || !decodedToken.id) return response.status(401).json({ error: 'invalid or missing token'})
     
     request.user = await User.findById(decodedToken.id)
-    console.log(request.user.id)
+    console.log(decodedToken.id)
     next()
   } else {
     next()
