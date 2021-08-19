@@ -14,6 +14,7 @@ import { initializeUsers } from './reducers/usersReducer'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Users from './views/Users'
 import User from './views/User'
+import Blog from './views/Blog'
 
 const App = () => {
 
@@ -63,6 +64,7 @@ const App = () => {
   }
 
   const handleDelete = async blog => {
+    console.log('history', history)
     // eslint-disable-next-line no-unused-vars
     const response = await blogService.deleteBlog(blog)
     dispatch(deleteBlog(blog.id))
@@ -92,6 +94,9 @@ const App = () => {
   return (
     <Router>
       <Switch>
+        <Route path='/blogs/:id'>
+          <Blog blogs={blogs} handleLike={handleUpdate} handleDelete={handleDelete}/>
+        </Route>
         <Route exact path='/users/:id'>
           <User users={users}/>
         </Route>
