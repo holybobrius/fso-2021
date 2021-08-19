@@ -9,6 +9,8 @@ import { login, logout } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { end, showError, showNotif } from './reducers/notificationReducer'
 import { create, deleteBlog, initializeBlogs, updateBlog } from './reducers/blogReducer'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Users from './views/Users'
 
 const App = () => {
 
@@ -76,15 +78,24 @@ const App = () => {
   }, [])
 
   return (
-    <div>
-      <Notification message={notification.content} styles={notification.style}/>
-      {user !== null
-        ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
-        : <Togglable buttonLabel='show login'><LoginForm
-          handleLogin={handleLogin}
-        /></Togglable>
-      }
-    </div>
+    <Router>
+      <Switch>
+        <Route path='/users'>
+          <Users />
+        </Route>
+        <Route path='/'>
+          <div>
+            <Notification message={notification.content} styles={notification.style}/>
+            {user !== null
+              ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
+              : <Togglable buttonLabel='show login'><LoginForm
+                handleLogin={handleLogin}
+              /></Togglable>
+            }
+          </div>
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
