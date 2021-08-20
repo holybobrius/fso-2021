@@ -57,6 +57,11 @@ const App = () => {
     }, 5000)
   }
 
+  const handleComment = (id, content) => {
+    console.log(id, content)
+    blogService.createComment(id, content).then(updatedBlog => dispatch(updateBlog(updatedBlog)))
+  }
+
   const handleUpdate = updatedBlog => {
     console.log(updatedBlog.user)
     blogService.update(updatedBlog.id, updatedBlog)
@@ -102,7 +107,7 @@ const App = () => {
       }
       <Switch>
         <Route path='/blogs/:id'>
-          <Blog blogs={blogs} handleLike={handleUpdate} handleDelete={handleDelete}/>
+          <Blog blogs={blogs} handleLike={handleUpdate} handleDelete={handleDelete} handleComment={handleComment}/>
         </Route>
         <Route exact path='/users/:id'>
           <User users={users}/>

@@ -1,10 +1,14 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router'
 
-const Blog = ({ blogs, handleLike, handleDelete }) => {
+const Blog = ({ blogs, handleLike, handleDelete, handleComment }) => {
   const id = useParams().id
   const blog = blogs.find(n => n.id === id)
   const history = useHistory()
+  const sendComment = event => {
+    event.preventDefault()
+    handleComment(blog.id, event.target.comment.value)
+  }
   return(
     <div>
       {!blog ? null :
@@ -22,6 +26,10 @@ const Blog = ({ blogs, handleLike, handleDelete }) => {
           }}>like</button>
           <p>added by {blog.user.name}</p>
           <h3>comments</h3>
+          <form onSubmit={sendComment}>
+            <input name='comment' />
+            <input type='submit' />
+          </form>
           <ul>
             {blog.comments.map(comment => <li key={comment}>{comment}</li>)}
           </ul>

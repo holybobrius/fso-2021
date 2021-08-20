@@ -50,7 +50,7 @@ blogsRouter.post('/:id/comments', async (request, response) => {
     author: blog.author,
     url: blog.url,
     likes: blog.likes,
-    comments: request.body.content,
+    comments: blog.comments.concat(request.body.content),
     user: user
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedObj, { new: true })
