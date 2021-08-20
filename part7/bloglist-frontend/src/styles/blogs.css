@@ -1,5 +1,4 @@
 .blog {
-  border: 1px solid black;
   margin: 5px;
 }
 
@@ -7,6 +6,7 @@
   color: red;
 }
 
-nav {
-  display: flex;
+body {
+  margin: 0;
+  font-family: 'Roboto';
 }

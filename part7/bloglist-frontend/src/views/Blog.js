@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router'
+import { Container } from '@material-ui/core'
 
 const Blog = ({ blogs, handleLike, handleDelete, handleComment }) => {
   const id = useParams().id
@@ -10,7 +11,7 @@ const Blog = ({ blogs, handleLike, handleDelete, handleComment }) => {
     handleComment(blog.id, event.target.comment.value)
   }
   return(
-    <div>
+    <Container>
       {!blog ? null :
         <div>
           <h2>
@@ -39,7 +40,7 @@ const Blog = ({ blogs, handleLike, handleDelete, handleComment }) => {
           }}>delete</button>
         </div>
       }
-    </div>
+    </Container>
   )
 }
 

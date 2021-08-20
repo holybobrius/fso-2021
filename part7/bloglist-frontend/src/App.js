@@ -15,6 +15,35 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Users from './views/Users'
 import User from './views/User'
 import Blog from './views/Blog'
+import { Container } from '@material-ui/core'
+import styled from 'styled-components'
+
+const LogoutButton = styled.button`
+  background: gray;
+  font-size: 1.3rem;
+  border-style: none;
+  background: inherit;
+  text-decoration: underline;
+  padding: 0;
+`
+
+const Navbar = styled.nav`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #D1D1D1;
+  height: 5vh;
+  :last-child {
+    margin-left: auto;
+  }
+`
+
+const NavLink = styled.p`
+  font-size: 1.3rem;
+  color: black;
+`
 
 const App = () => {
 
@@ -99,11 +128,11 @@ const App = () => {
   return (
     <Router>
       {user === null ? null :
-        <nav>
-          <Link to='/'>Blogs</Link>
-          <Link to='/users'>Users</Link>
-          <button onClick={handleLogout}>logout</button>
-        </nav>
+        <Navbar>
+          <Link to='/'><NavLink>blogs</NavLink></Link>
+          <Link to='/users'><NavLink>users</NavLink></Link>
+          <LogoutButton onClick={handleLogout}>logout</LogoutButton>
+        </Navbar>
       }
       <Switch>
         <Route path='/blogs/:id'>
@@ -116,7 +145,7 @@ const App = () => {
           <Users users={users}/>
         </Route>
         <Route exact path='/'>
-          <div>
+          <Container>
             <Notification message={notification.content} styles={notification.style}/>
             {user !== null
               ? <BlogsForm blogs={blogs} handleClick={handleLogout} handleCreate={handleSubmit} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
@@ -124,7 +153,7 @@ const App = () => {
                 handleLogin={handleLogin}
               /></Togglable>
             }
-          </div>
+          </Container>
         </Route>
       </Switch>
     </Router>
