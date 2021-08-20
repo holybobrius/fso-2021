@@ -21,6 +21,10 @@ const Blog = ({ blogs, handleLike, handleDelete }) => {
             handleLike(blogToUpdate)
           }}>like</button>
           <p>added by {blog.user.name}</p>
+          <h3>comments</h3>
+          <ul>
+            {blog.comments.map(comment => <li key={comment}>{comment}</li>)}
+          </ul>
           <button className='delete' onClick={() => {
             if(window.confirm(`remove ${blog.title} by ${blog.author}?`)) handleDelete(blog)
             history.push('/')
