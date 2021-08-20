@@ -5,7 +5,6 @@ const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-  console.log(blogs)
   response.json(blogs)
 })
 
@@ -26,7 +25,6 @@ blogsRouter.post('/', async (request, response) => {
   })
   console.log('blog', blog)
   const result = await blog.save()
-  console.log(result)
   user.blogs = user.blogs.concat(result._id)
   await user.save()
   response.status(201).json(result)
@@ -44,8 +42,8 @@ blogsRouter.delete('/:id', async (request, response) => {
 blogsRouter.post('/:id/comments', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   
+
   const user = await User.findById(blog.user)
-  
   const updatedObj = {
     title: blog.title,
     id: blog.id,
@@ -56,7 +54,7 @@ blogsRouter.post('/:id/comments', async (request, response) => {
     user: user
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedObj, { new: true })
-  updatedBlog.user = await User.findById(request.body.user)
+  console.log('user', updatedBlog.user)
   updatedBlog.save()
   response.json(updatedBlog)
 })
