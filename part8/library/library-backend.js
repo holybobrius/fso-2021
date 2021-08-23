@@ -110,6 +110,9 @@ const resolvers = {
     booksCount: () => books.length,
     authorsCount: () => authors.length,
     allBooks: () => books
+  }, 
+  Book: {
+    author: (root) => authors.find(n => n.name === root.author)
   }
 }
 
