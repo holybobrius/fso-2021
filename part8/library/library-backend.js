@@ -142,10 +142,13 @@ const resolvers = {
       const book = { ...args, id: uuid()}
       console.log(args.author)
       if(authors.map(author => author.name).includes(args.author)) {
-        book.author = authors.find(author => author.name === args.author)
+        book.author = args.author
+      } else {
+        authors = authors.concat({ name: args.author, id: uuid() })
+        book.author = args.author
       }
+      books = books.concat(book)
       console.log(book)
-      books.concat(book)
       return book
     }
   }
