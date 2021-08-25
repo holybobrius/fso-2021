@@ -50,7 +50,7 @@ const App = () => {
       />
 
       <NewBook
-        show={page === 'add'}
+        show={page === 'add'} booksQuery={ALL_BOOKS} authorsQuery={ALL_AUTHORS}
       />
 
     </div>
