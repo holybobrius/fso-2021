@@ -42,7 +42,7 @@ const App = () => {
       </div>
 
       <Authors
-        show={page === 'authors'} data={authors.data} loading={authors.loading}
+        show={page === 'authors'} data={authors.data} loading={authors.loading} authorsQuery={ALL_AUTHORS}
       />
 
       <Books
