@@ -1,5 +1,19 @@
-const { ApolloServer, gql } = require('apollo-server')
+require('dotenv').config()
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const { v1: uuid } = require('uuid')
+const Book = require('./models/book')
+const Author = require('./models/author')
+const mongoose = require('mongoose')
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch(err => console.log('error connecting to MongoDB', err.message))
 
 let authors = [
   {
@@ -98,7 +112,7 @@ const typeDefs = gql`
     author: Author!,
     published: Int!,
     id: ID!
-    genres: [String]
+    genres: [String!]!
   }
 
   type Query {
@@ -111,7 +125,7 @@ const typeDefs = gql`
   type Mutation {
     addBook(
       title: String!
-      author: String!
+      author: String
       published: Int!
       genres: [String]
     ): Book
@@ -124,35 +138,38 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    booksCount: () => books.length,
-    authorsCount: () => authors.length,
+    booksCount: () => Book.collection.countDocuments(),
+    authorsCount: () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
-      if(!args.author && !args.genre) return books
-      if(args.author && args.genre) return books.filter(book => book.author === args.author).filter(book => book.genres.includes(args.genre))
-      if(args.genre) return books.filter(book => book.genres.includes(args.genre))
-      if(args.author) return books.filter(book => book.author === args.author)
+      if(!args.author && !args.genre) return Book.find({})
     },
-    allAuthors: () => authors
+    allAuthors: () => Author.find({})
   }, 
   Book: {
-    author: (root) => authors.find(n => n.name === root.author)
+    author: (root) => Author.findOne({ name: root.author })
   },
-  Author: {
-    booksCount: (root) => books.filter(book => book.author === root.name).length
-  },
+  /*Author: {
+    booksCount: (root) => Book.find({ author: root.aut})
+  } , */ 
 
   Mutation: {
-    addBook: (root, args) => {
-      const book = { ...args, id: uuid()}
-      console.log(args.author)
+    addBook: async (root, args) => {
+      const book = new Book({ ...args, id: uuid()})
       if(authors.map(author => author.name).includes(args.author)) {
         book.author = args.author
       } else {
-        authors = authors.concat({ name: args.author, id: uuid() })
+        const author = new Author({ name: args.author, id: uuid() })
+        author.save()
         book.author = args.author
       }
-      books = books.concat(book)
-      console.log(book)
+      try {
+        await book.save()
+        console.log('saving', book)
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
       return book
     },
     
